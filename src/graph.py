@@ -16,8 +16,7 @@ class Graph:
     """
 
     def __init__(self):
-        """Constructor
-        """
+        """Constructor"""
         self.graph = dict()
         self.matrix_cols = -1
         self.path = []
@@ -56,7 +55,7 @@ class Graph:
         situations when the camera is staying in the query dataset. Don't use
         that. It is not useful
         For fanout = 1, 3 children
-        For fanout = 2 , 5 children
+        For fanout = 2, 5 children
 
         Args:
             cost_matrix (np.ndarray): cost matrix
@@ -76,8 +75,7 @@ class Graph:
         self.graph[source_node_id] = []
         for column_id in range(cols):
             index = self.pair2index(row_id, column_id)
-            self.graph[source_node_id].append(
-                (index, cost_matrix[row_id, column_id]))
+            self.graph[source_node_id].append((index, cost_matrix[row_id, column_id]))
 
         # adding all the nodes in the matrix
         # iterating over parents
@@ -93,10 +91,12 @@ class Graph:
                     child_id = self.pair2index(child_row_id, k)
                     if parent_id in self.graph:
                         self.graph[parent_id].append(
-                            (child_id, cost_matrix[child_row_id, k]))
+                            (child_id, cost_matrix[child_row_id, k])
+                        )
                     else:
                         self.graph[parent_id] = [
-                            (child_id, cost_matrix[child_row_id, k])]
+                            (child_id, cost_matrix[child_row_id, k])
+                        ]
 
         # connecting last row to the target node
         # assuming target node coords (last_row+1, 0)
@@ -139,13 +139,14 @@ class Graph:
         # plot_edges = True
         if self.matrix_cols > 20:
             print(
-                "WARNING: Graph is too big to visualize. Plotting edges will be skipped\n")
+                "WARNING: Graph is too big to visualize. Plotting edges will be skipped\n"
+            )
             plot_edges = False
 
         nodes = dict()
 
         # make sure nodes are unique
-        for parent_id, children in self. graph.items():
+        for parent_id, children in self.graph.items():
             for child in children:
                 nodes[child[0]] = child[1]
 
@@ -177,17 +178,24 @@ class Graph:
                     dx = 0.7 * (child_coords[1] - parent_coords[1])
                     # rows correspond to y
                     dy = 0.7 * (child_coords[0] - parent_coords[0])
-                    plt.arrow(arr_x, arr_y, dx, dy, width=0.01,
-                              head_width=arrow_head_w,
-                              head_length=arrow_head_l, color='k')
+                    plt.arrow(
+                        arr_x,
+                        arr_y,
+                        dx,
+                        dy,
+                        width=0.01,
+                        head_width=arrow_head_w,
+                        head_length=arrow_head_l,
+                        color="k",
+                    )
 
-        plt.scatter(x, y, c=c, cmap='gray', s=s)
+        plt.scatter(x, y, c=c, cmap="gray", s=s)
         # reversing y for the thing to look like matrix
         ax = plt.gca()
         ax.set_ylim(ax.get_ylim()[::-1])
 
     def plotPathOverGraph(self, plot_edges=True):
-        """ Visualizes the path over the graph. 
+        """Visualizes the path over the graph.
         Use for small graphs ONLY.
 
         Args:
@@ -212,10 +220,10 @@ class Graph:
             # 200 - size of scatter
             s = len(self.path) * [200]
 
-        plt.scatter(x, y, c='r', s=s)
+        plt.scatter(x, y, c="r", s=s)
 
     def getImageCorrespodences(self):
-        """ Returns image correspondences
+        """Returns image correspondences
             returns the pairs of matrix coordinates that correspond to
             found image associtions. (i,j) i-th query image corresponds to j-th
             reference image from the found shortest path
